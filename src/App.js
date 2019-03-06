@@ -184,8 +184,7 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({imageUrl: this.state.input})
-    console.log('input:', this.state.input);
-    fetch('http://localhost:3000/imageUrl', {
+    fetch('https://morning-citadel-94917.herokuapp.com/imageUrl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -194,9 +193,8 @@ class App extends Component {
     })
     .then(res => res.json())
     .then(response => {
-      console.log('response: ', response);
       if(response) {
-        fetch('http://localhost:3000/image', {
+        fetch('https://morning-citadel-94917.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
