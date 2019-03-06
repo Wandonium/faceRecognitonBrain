@@ -2,19 +2,12 @@ import React, { Component } from 'react';
 import Navigation from './components/Navigation/Navigation';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
-import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
 import './App.css';
-
-
-// initialize Clarifai with api key.
-const app = new Clarifai.App({
- apiKey: '1d8041663c54435aae1284d5d075b11d'
-});
 
 const particlesOptions = {
   "particles": {
@@ -191,10 +184,17 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({imageUrl: this.state.input})
-    app.models.predict(
-      Clarifai.FACE_DETECT_MODEL, 
-      this.state.input)
+    console.log('input:', this.state.input);
+    fetch('http://localhost:3000/imageUrl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+    .then(res => res.json())
     .then(response => {
+      console.log('response: ', response);
       if(response) {
         fetch('http://localhost:3000/image', {
           method: 'put',
