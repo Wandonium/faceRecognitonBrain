@@ -9,7 +9,7 @@ import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
 import './App.css';
 
-const particlesOptions = {
+/*const particlesOptions = {
   "particles": {
     "number": {
       "value": 223,
@@ -118,8 +118,8 @@ const particlesOptions = {
     }
   },
   "retina_detect": true
-}
- /*{
+}*/
+const particlesOptions = {
   particles: {
     number: {
       value: 200,
@@ -129,7 +129,7 @@ const particlesOptions = {
       }
     }
   }
-}*/
+}
 
 const initialState = {
   input: '',
