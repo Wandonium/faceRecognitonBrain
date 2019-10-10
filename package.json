@@ -2,10 +2,12 @@
   "name": "face_recognition_brain",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://wandonium.github.io/faceRecognitonBrain/",
   "dependencies": {
     "clarifai": "^2.9.1",
     "cors": "^2.8.5",
     "face-api.js": "^0.18.0",
+    "gh-pages": "^2.1.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-particles-js": "^2.4.2",
@@ -19,6 +21,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
