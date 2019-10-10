@@ -1,13 +1,22 @@
 import React from 'react';
+import Modal from 'react-responsive-modal';
+
 
 class SignIn extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			signInEmail: '',
-			signInPassword: ''
+			signInPassword: '',
+			error: "No errors"
 		}
 	}
+
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+	}
+
 	onEmailChange = (event) => {
 		this.setState({signInEmail: event.target.value})
 	}
@@ -15,23 +24,49 @@ class SignIn extends React.Component {
 		this.setState({signInPassword: event.target.value})
 	}
 
+	onOpenModal = () => {
+		this.setState({ open: true });
+	};
+	 
+	onCloseModal = () => {
+		this.setState({ open: false });
+	};
+
 	onSubmitSignIn = () => {
-		fetch('https://morning-citadel-94917.herokuapp.com/signin', {
-			method: 'post',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({
-				email: this.state.signInEmail,
-				password: this.state.signInPassword
+		const email = this.state.signInEmail;
+		const password = this.state.signInPassword;
+		if(!email || !password) {
+			this.setState({error: "Error! One or more fields is empty!"});
+			this.onOpenModal();
+		} else if(!this.validateEmail(email)) {
+			this.setState({error: "Error! Invalid email address!"});
+			this.onOpenModal();
+		} else {
+			fetch('http://localhost:3000/signin', {
+				method: 'post',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({
+					email: this.state.signInEmail,
+					password: this.state.signInPassword
+				})
 			})
-		})
-		.then(response => response.json())
-		.then(user => {
-			if(user.id){
-				this.props.loadUser(user);
-				this.props.onRouteChange('home');
-			}
-		});
+			.then(response => response.json())
+			.then(user => {
+				if(user.id){
+					this.props.loadUser(user);
+					this.props.onRouteChange('home');
+				} else {
+					this.setState({error: user});
+					this.onOpenModal();
+				}
+			});
+		}
 	}
+
+	displayError(){
+		return {__html: this.state.error};
+	}
+
 	render(){
 		const { onRouteChange } = this.props;
 		return (
@@ -73,6 +108,11 @@ class SignIn extends React.Component {
 				    </div>
 				  </div>
 				</main>
+				<div>
+					<Modal open={this.state.open} onClose={this.onCloseModal} center>
+					<h2 dangerouslySetInnerHTML={this.displayError()}></h2>
+					</Modal>
+				</div>
 			</article>
 		);
 	}

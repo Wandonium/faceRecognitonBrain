@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "clarifai": "^2.9.0",
+    "clarifai": "^2.9.1",
     "cors": "^2.8.5",
     "face-api.js": "^0.18.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-particles-js": "^2.4.2",
+    "react-responsive-modal": "^4.0.1",
     "react-scripts": "^2.1.5",
     "react-tilt": "^0.1.4"
   },

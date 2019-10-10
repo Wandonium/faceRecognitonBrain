@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from 'react-responsive-modal';
 
 class Register extends React.Component {
 	constructor(props) {
@@ -6,36 +7,72 @@ class Register extends React.Component {
 		this.state = {
 			email: '',
 			password: '',
-			name: ''
+			name: '',
+			open: false,
+			error: 'No errors'
 		}
 	}
 	onNameChange = (event) => {
 		this.setState({name: event.target.value})
 	}
+
+	validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(String(email).toLowerCase());
+	}
+
 	onEmailChange = (event) => {
-		this.setState({email: event.target.value})
+		this.setState({email: event.target.value});
 	}
 	onPasswordChange = (event) => {
 		this.setState({password: event.target.value})
 	}
 
+	onOpenModal = () => {
+		this.setState({ open: true });
+	};
+	 
+	onCloseModal = () => {
+		this.setState({ open: false });
+	};
+
 	onSubmitRegister = () => {
-		fetch('https://morning-citadel-94917.herokuapp.com/register', {
-			method: 'post',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({
-				email: this.state.email,
-				password: this.state.password,
-				name: this.state.name
+		const name = this.state.name;
+		const email = this.state.email;
+		const password = this.state.password;
+		if(!name || !email || !password){
+			this.setState({error: "Error! One or more fields is empty!"});
+			this.onOpenModal();
+		}
+		else if(!this.validateEmail(email)){
+			this.setState({error: "Error! Invalid email address!"});
+			this.onOpenModal();
+		} else {
+			fetch('http://localhost:3000/register', {
+				method: 'post',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({
+					email: this.state.email,
+					password: this.state.password,
+					name: this.state.name
+				})
 			})
-		})
-		.then(response => response.json())
-		.then(user => {
-			if(user.id){
-				this.props.loadUser(user);
-				this.props.onRouteChange('home');
-			}
-		});
+			.then(response => response.json())
+			.then(user => {
+				if(user.id){
+					this.props.loadUser(user);
+					this.props.onRouteChange('home');
+				} else {
+					this.setState({error: user});
+					this.onOpenModal();
+				}
+			});
+		}
+		
+	}
+
+	displayError(){
+		return {__html: this.state.error};
 	}
 
 	render() {
@@ -85,6 +122,11 @@ class Register extends React.Component {
 			    </div>
 			  </div>
 			</main>
+			<div>
+				<Modal open={this.state.open} onClose={this.onCloseModal} center>
+				<h2 dangerouslySetInnerHTML={this.displayError()}></h2>
+				</Modal>
+			</div>
 		</article>
 		);
 	}

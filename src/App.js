@@ -122,7 +122,7 @@ import './App.css';
 const particlesOptions = {
   particles: {
     number: {
-      value: 200,
+      value: 30,
       density: {
         enable: true,
         value_area: 800
@@ -183,8 +183,9 @@ class App extends Component {
   }
 
   onSubmit = () => {
+    console.log("Detect clicked...");
     this.setState({imageUrl: this.state.input})
-    fetch('https://morning-citadel-94917.herokuapp.com/imageUrl', {
+    fetch('http://localhost:3000/imageUrl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -194,7 +195,7 @@ class App extends Component {
     .then(res => res.json())
     .then(response => {
       if(response) {
-        fetch('https://morning-citadel-94917.herokuapp.com/image', {
+        fetch('http://localhost:3000/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
