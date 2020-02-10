@@ -185,7 +185,7 @@ class App extends Component {
   onSubmit = () => {
     console.log("Detect clicked...");
     this.setState({imageUrl: this.state.input})
-    fetch('https://radiant-castle-80801.herokuapp.com/imageUrl', {
+    fetch('https://face-reco-api.herokuapp.com/imageUrl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -195,7 +195,7 @@ class App extends Component {
     .then(res => res.json())
     .then(response => {
       if(response) {
-        fetch('https://radiant-castle-80801.herokuapp.com/image', {
+        fetch('https://face-reco-api.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
