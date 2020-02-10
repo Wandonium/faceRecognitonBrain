@@ -9,10 +9,10 @@ import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
 import './App.css';
 
-/*const particlesOptions = {
+const particlesOptions = {
   "particles": {
     "number": {
-      "value": 223,
+      "value": 147,
       "density": {
         "enable": true,
         "value_area": 800
@@ -118,18 +118,18 @@ import './App.css';
     }
   },
   "retina_detect": true
-}*/
-const particlesOptions = {
+}
+/* const particlesOptions = {
   particles: {
     number: {
-      value: 30,
+      value: 100,
       density: {
         enable: true,
         value_area: 800
       }
     }
   }
-}
+} */
 
 const initialState = {
   input: '',
