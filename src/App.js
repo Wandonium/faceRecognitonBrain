@@ -7,6 +7,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
+import {APP_URL} from './components/utils.js';
 import './App.css';
 
 const particlesOptions = {
@@ -148,6 +149,7 @@ const initialState = {
 class App extends Component {
   constructor() {
     super();
+    console.log("app url: ", APP_URL);
     this.state = initialState;
   }
 
